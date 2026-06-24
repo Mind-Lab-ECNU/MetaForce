@@ -1,0 +1,325 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "Qwen3-VL-8B-Instruct",
+      "description": "Invoke the Qwen3-VL-8B vision-language model for image understanding and analysis. Input an image and text prompt, the model will perform tasks such as image description, question answering, and reasoning based on the prompt, returning text results. Suitable for general image understanding tasks with fast response speed.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The text prompt sent to the model, describing the task you want the model to perform on the image, such as 'Describe the content of this image', 'How many people are in the picture', etc."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The index of the image to analyze. Index starts from 1, maximum value is the number of images in the current environment. Choose 1 to operate on the first image."
+          }
+        },
+        "required": ["prompt", "image_index"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "Qwen3-VL-32B-Instruct",
+      "description": "Invoke the Qwen3-VL-32B vision-language model for image understanding and analysis. Compared to the 8B version, the 32B model has stronger reasoning capabilities and higher accuracy, suitable for complex image analysis tasks such as fine-grained recognition, multi-step reasoning, and professional domain Q&A.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The text prompt sent to the model, describing the task you want the model to perform on the image, such as 'Analyze the data trends in the chart', 'Identify all objects in the image and explain their relationships', etc."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The index of the image to analyze. Index starts from 1, maximum value is the number of images in the current environment. Choose 1 to operate on the first image."
+          }
+        },
+        "required": ["prompt", "image_index"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "InternVL3.5-38B-Instruct",
+      "description": "Invoke the InternVL3.5-38B vision-language model for image understanding and analysis. The InternVL series models excel in Chinese understanding and multimodal reasoning, and the 38B version is suitable for complex vision tasks requiring high precision.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The text prompt sent to the model, describing the task you want the model to perform on the image. Supports both Chinese and English prompts."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The index of the image to analyze. Index starts from 1, maximum value is the number of images in the current environment. Choose 1 to operate on the first image."
+          }
+        },
+        "required": ["prompt", "image_index"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "InternVL3.5-14B-Instruct",
+      "description": "Invoke the InternVL3.5-14B vision-language model for image understanding and analysis. The 14B version maintains high accuracy while offering faster inference speed, suitable for latency-sensitive application scenarios.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The text prompt sent to the model, describing the task you want the model to perform on the image. Supports both Chinese and English prompts."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The index of the image to analyze. Index starts from 1, maximum value is the number of images in the current environment. Choose 1 to operate on the first image."
+          }
+        },
+        "required": ["prompt", "image_index"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "WolframAlpha",
+      "description": "Invoke the Wolfram|Alpha computational knowledge engine. Input natural language queries and receive structured computation results or factual information. Suitable for mathematical calculations, scientific data queries, unit conversions, statistical analysis, etc. Note: Query content should be in English for best results.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The query content, using English natural language description, such as 'solve x^2 + 2x - 3 = 0', 'population of China', 'convert 100 miles to kilometers', etc."
+          }
+        },
+        "required": ["query"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "SAM3",
+      "description": "Use SAM3 (Segment Anything Model 3) for image segmentation. Supports two segmentation modes: text segmentation mode locates and segments target objects through natural language descriptions; bounding box segmentation mode precisely segments specific regions by specifying bounding box coordinates. Segmentation results generate visualization images with segmentation masks and bounding boxes annotated.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "segment_type": {
+            "type": "string",
+            "description": "Segmentation mode type, must be one of 'text' or 'box'. 'text' means using text prompts for segmentation, 'box' means using bounding box coordinates for segmentation."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The index of the image to segment. Index starts from 1, maximum value is the number of images in the current environment. Choose 1 to operate on the first image."
+          },
+          "text_prompt": {
+            "type": "string",
+            "description": "Text prompt describing the target object to segment, such as 'person', 'car', 'the red apple on the left', etc. Required when segment_type is 'text'."
+          },
+          "threshold": {
+            "type": "number",
+            "description": "Segmentation confidence threshold, range 0.0-1.0, default is 0.5. Higher thresholds filter out low-confidence segmentation results. Optional when segment_type is 'text'."
+          },
+          "boxes": {
+            "type": "array",
+            "description": "List of bounding box coordinates, each in format [x1, y1, x2, y2], where (x1, y1) is the top-left corner and (x2, y2) is the bottom-right corner. Coordinates are pixel values. Example: [[100, 100, 200, 200], [300, 300, 400, 400]]. Required when segment_type is 'box'.",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "labels": {
+            "type": "array",
+            "description": "List of labels corresponding to each bounding box, same length as boxes array. Each element is a boolean, true means foreground (object to segment), false means background. Example: [true, true]. Required when segment_type is 'box'.",
+            "items": {
+              "type": "boolean"
+            }
+          }
+        },
+        "required": ["segment_type", "image_index"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "MinerU2.5",
+      "description": "Use MinerU for layout detection and content extraction from document images. Can identify the positions of text, tables, formulas, and other elements in documents, and extract their content. Suitable for structured information extraction from PDF screenshots, scanned documents, academic papers, etc.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "extract_type": {
+            "type": "string",
+            "description": "Extraction type, must be one of three: 'two_step' for layout detection followed by content extraction returning complete structured results; 'layout' for layout detection only returning element positions; 'content' for direct extraction of specified content type text."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The index of the image to process. Index starts from 1, maximum value is the number of images in the current environment. Choose 1 to operate on the first image."
+          },
+          "content_type": {
+            "type": "string",
+            "description": "The type of content to extract, must be one of three: 'text' for plain text content, 'table' for table content, 'equation' for mathematical formula content. Required when extract_type is 'content'."
+          }
+        },
+        "required": ["extract_type", "image_index"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "PaddleOCR",
+      "description": "Use PaddleOCR for Optical Character Recognition (OCR) to extract text content from images. Supports recognition of multiple languages, suitable for documents, signs, handwritten text, and other scenarios.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The index of the image for OCR recognition. Index starts from 1, maximum value is the number of images in the current environment. Choose 1 to operate on the first image."
+          }
+        },
+        "required": ["image_index"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "Qwen-Image-Edit",
+      "description": "Use the Qwen image editing model for intelligent image editing. Modify images based on text prompts, such as changing backgrounds, modifying objects, adding elements, style transfer, etc. The edited image will be added to the environment image list for subsequent tool calls. Note: Qwen-Image-Edit uses a diffusion model, which may produce unstable image quality. It is not suitable for precise editing tasks requiring high accuracy.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Editing instruction describing the modification you want to make to the image, such as 'remove the background', 'change the sky to sunset', 'make the person wear a red hat', etc. English description recommended."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The index of the image to edit. Index starts from 1, maximum value is the number of images in the current environment. Choose 1 to operate on the first image."
+          }
+        },
+        "required": ["prompt", "image_index"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "OpenCV",
+      "description": "Use OpenCV to perform basic image processing operations, including cropping, resizing, rotation, flipping, grayscale, blurring, binarization, and edge detection. Suitable for image preprocessing and data augmentation. Returns the processed image data URL after operation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Sub-operation name, must be one of: crop, resize, rotate, flip, grayscale, blur, threshold, canny."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The index of the image to process. Index starts from 1, maximum value is the number of images in the current environment."
+          },
+          "x": {
+            "type": "integer",
+            "description": "Top-left x coordinate of the crop region. Required when operation is 'crop'."
+          },
+          "y": {
+            "type": "integer",
+            "description": "Top-left y coordinate of the crop region. Required when operation is 'crop'."
+          },
+          "w": {
+            "type": "integer",
+            "description": "Width of the crop region, must be positive and not exceed boundaries. Required when operation is 'crop'."
+          },
+          "h": {
+            "type": "integer",
+            "description": "Height of the crop region, must be positive and not exceed boundaries. Required when operation is 'crop'."
+          },
+          "width": {
+            "type": "integer",
+            "description": "Target width, must be positive. Required when operation is 'resize'."
+          },
+          "height": {
+            "type": "integer",
+            "description": "Target height, must be positive. Required when operation is 'resize'."
+          },
+          "interpolation": {
+            "type": "string",
+            "description": "Interpolation method, default is 'LINEAR', options: NEAREST, LINEAR, AREA, CUBIC. Optional when operation is 'resize'."
+          },
+          "angle": {
+            "type": "number",
+            "description": "Rotation angle (positive for counter-clockwise, negative for clockwise). Required when operation is 'rotate'."
+          },
+          "center": {
+            "type": "array",
+            "description": "Rotation center point [x, y], uses image center if not provided. Optional when operation is 'rotate'.",
+            "items": {
+              "type": "number"
+            }
+          },
+          "scale": {
+            "type": "number",
+            "description": "Scale factor, default 1.0, must be positive. Optional when operation is 'rotate'."
+          },
+          "flip_code": {
+            "type": "integer",
+            "description": "Flip mode, 1 for horizontal flip, 0 for vertical flip, -1 for horizontal+vertical flip. Required when operation is 'flip'."
+          },
+          "ksize": {
+            "type": "integer",
+            "description": "Gaussian kernel size, must be positive odd number; even numbers will be automatically rounded up to nearest odd. Required when operation is 'blur'."
+          },
+          "thresh": {
+            "type": "integer",
+            "description": "Threshold value, range 0-255; can be omitted when type is 'OTSU'. Required when operation is 'threshold'."
+          },
+          "maxval": {
+            "type": "integer",
+            "description": "Maximum value, default 255, range 0-255. Optional when operation is 'threshold'."
+          },
+          "type": {
+            "type": "string",
+            "description": "Threshold type, default 'BINARY', options: BINARY, BINARY_INV, OTSU; invalid values fall back to 'BINARY'. Optional when operation is 'threshold'."
+          },
+          "threshold1": {
+            "type": "integer",
+            "description": "Low threshold. Required when operation is 'canny'."
+          },
+          "threshold2": {
+            "type": "integer",
+            "description": "High threshold. Required when operation is 'canny'."
+          }
+        },
+        "required": ["operation", "image_index"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "python_code",
+      "description": "Execute Python code in a restricted sandbox environment, automatically outputting the value of the last line expression (even without explicit print). Suitable for calculations, data processing, quick verification, and other scenarios. Note: This tool does not support image generation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "The Python code to execute. Supports plain text or strings containing ```python``` code blocks."
+          },
+          "stdin": {
+            "type": "string",
+            "description": "Standard input content to pass. Optional."
+          }
+        },
+        "required": ["code"]
+      }
+    }
+  }
+]

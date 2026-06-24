@@ -1,0 +1,232 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "InternVL3.5-38B-Instruct",
+      "description": "Invoke the InternVL3.5-38B vision-language model for high-precision image understanding and multimodal reasoning. Suitable for complex visual question answering and detailed analysis tasks.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The instruction for the model, describing what to analyze or answer from the image."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to analyze in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "InternVL3.5-14B-Instruct",
+      "description": "Invoke the InternVL3.5-14B vision-language model for efficient image understanding and multimodal reasoning with lower latency than larger variants.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The instruction for the model, describing what to analyze or answer from the image."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to analyze in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "step3",
+      "description": "Invoke StepFun Step-3 via OpenAI-compatible chat completions for advanced multimodal reasoning on image+text inputs.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The instruction sent to Step-3 describing what to analyze or answer from the image."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to analyze in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "WolframAlpha",
+      "description": "Invoke the Wolfram|Alpha computational knowledge engine for symbolic math, scientific facts, unit conversion, and structured computational queries. English queries are recommended.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The natural-language or symbolic query, e.g. 'solve x^2+2x-3=0' or 'convert 10 miles to km'."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "UniChart",
+      "description": "Use UniChart for chart understanding and chart question answering. It reads chart images and returns a text answer based on the provided prompt.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the chart image to analyze in the current environment."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Optional chart QA prompt. If omitted, the service default prompt is used."
+          }
+        },
+        "required": [
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "Deplot",
+      "description": "Use Deplot to convert chart images into underlying tabular data text. Suitable for extracting structured data from plots.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the chart image to process in the current environment."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Optional extraction prompt. If omitted, the service default prompt is used."
+          }
+        },
+        "required": [
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "ChartMoe",
+      "description": "Use ChartMoe to understand chart images and generate chart-focused analysis or reconstruction-oriented text/code responses.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the chart image to analyze in the current environment."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Optional instruction for ChartMoe. If omitted, the service default prompt is used."
+          }
+        },
+        "required": [
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "python_code",
+      "description": "Execute Python code in a restricted sandbox for calculations and data processing. Returns text output.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Python code to execute."
+          },
+          "stdin": {
+            "type": "string",
+            "description": "Optional stdin passed to the code."
+          }
+        },
+        "required": [
+          "code"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "create_skill",
+      "description": "Create a reusable skill when existing tools are insufficient. Put requirement text in arguments.description.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the new skill should do and when to use it."
+          }
+        },
+        "required": [
+          "description"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "run_skill",
+      "description": "Run a skill entrypoint script (.py/.sh) and return textual output. Arguments must follow SKILL.md / SKILL_SPEC definition.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "skill_name": {
+            "type": "string",
+            "description": "Name of the skill to run."
+          },
+          "entrypoint": {
+            "type": "string",
+            "description": "Relative script path under the target skill directory."
+          },
+          "args": {
+            "type": "object",
+            "description": "Entrypoint arguments object."
+          }
+        },
+        "required": [
+          "skill_name",
+          "entrypoint"
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,570 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "Qwen3-VL-8B-Instruct",
+      "description": "Invoke the Qwen3-VL-8B vision-language model for fast image understanding and analysis. Suitable for general image description, question answering, and lightweight reasoning tasks.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The task instruction for the model, e.g. 'Describe this image' or 'Count how many people are in the picture'."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to analyze in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "Qwen3-VL-32B-Instruct",
+      "description": "Invoke the Qwen3-VL-32B vision-language model for stronger multimodal reasoning and higher precision image analysis.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The task instruction for the model, especially for complex analysis and reasoning over the image."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to analyze in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "Qwen3-VL-235B-A22B-Instruct",
+      "description": "Invoke the Qwen3-VL-235B-A22B-Instruct high-capacity vision-language model for advanced multimodal reasoning and difficult visual question answering.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The instruction describing what to analyze or answer from the image."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to analyze in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "step3",
+      "description": "Invoke StepFun Step-3 via OpenAI-compatible chat completions for advanced multimodal reasoning on image+text inputs.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The instruction sent to Step-3 describing what to analyze or answer from the image."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to analyze in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "InternVL3.5-38B-Instruct",
+      "description": "Invoke the InternVL3.5-38B vision-language model for high-precision image understanding and multimodal reasoning. Suitable for complex visual question answering and detailed analysis tasks.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The instruction for the model, describing what to analyze or answer from the image."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to analyze in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "InternVL3.5-14B-Instruct",
+      "description": "Invoke the InternVL3.5-14B vision-language model for efficient image understanding and multimodal reasoning with lower latency than larger variants.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The instruction for the model, describing what to analyze or answer from the image."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to analyze in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "WolframAlpha",
+      "description": "Invoke the Wolfram|Alpha computational knowledge engine for symbolic math, scientific facts, unit conversion, and structured computational queries. English queries are recommended.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The natural-language or symbolic query, e.g. 'solve x^2+2x-3=0' or 'convert 10 miles to km'."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "SAM3",
+      "description": "Use SAM3 (Segment Anything Model 3) for image segmentation by text prompt or bounding boxes, with visualization output.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "segment_type": {
+            "type": "string",
+            "description": "Segmentation mode: 'text' for text-prompt segmentation, or 'box' for box-guided segmentation."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to segment in the current environment."
+          },
+          "text_prompt": {
+            "type": "string",
+            "description": "Text prompt for target object, required when segment_type is 'text'."
+          },
+          "threshold": {
+            "type": "number",
+            "description": "Confidence threshold for text mode, optional, default 0.5."
+          },
+          "boxes": {
+            "type": "array",
+            "description": "List of boxes in [x1, y1, x2, y2] format, required when segment_type is 'box'.",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "labels": {
+            "type": "array",
+            "description": "List of boolean labels aligned with boxes, required when segment_type is 'box'.",
+            "items": {
+              "type": "boolean"
+            }
+          }
+        },
+        "required": [
+          "segment_type",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "MinerU2.5",
+      "description": "Use MinerU for document layout detection and content extraction from images.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "extract_type": {
+            "type": "string",
+            "description": "Extraction mode: 'two_step', 'layout', or 'content'."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to process in the current environment."
+          },
+          "content_type": {
+            "type": "string",
+            "description": "When extract_type='content', choose one of: 'text', 'table', 'equation'."
+          }
+        },
+        "required": [
+          "extract_type",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "PaddleOCR",
+      "description": "Use PaddleOCR for OCR text extraction from images.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image for OCR in the current environment."
+          }
+        },
+        "required": [
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "EasyOCR",
+      "description": "Use EasyOCR for text recognition on images. This ID tool only exposes image_index; language is fixed to English ('en') internally.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image for OCR in the current environment."
+          }
+        },
+        "required": [
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "GroundingDINO",
+      "description": "Use GroundingDINO for prompt-based open-vocabulary object detection on images.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to detect objects in the current environment."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Detection prompt (e.g. 'a person. a bicycle.')."
+          },
+          "box_threshold": {
+            "type": "number",
+            "description": "Box score threshold, optional, default 0.25."
+          },
+          "text_threshold": {
+            "type": "number",
+            "description": "Text matching threshold, optional, default 0.25."
+          }
+        },
+        "required": [
+          "image_index",
+          "prompt"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "UniChart",
+      "description": "Use UniChart for chart understanding and chart question answering. It reads chart images and returns a text answer based on the provided prompt.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the chart image to analyze in the current environment."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Optional chart QA prompt. If omitted, the service default prompt is used."
+          }
+        },
+        "required": [
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "Deplot",
+      "description": "Use Deplot to convert chart images into underlying tabular data text. Suitable for extracting structured data from plots.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the chart image to process in the current environment."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Optional extraction prompt. If omitted, the service default prompt is used."
+          }
+        },
+        "required": [
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "ChartMoe",
+      "description": "Use ChartMoe to understand chart images and generate chart-focused analysis or reconstruction-oriented text/code responses.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the chart image to analyze in the current environment."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Optional instruction for ChartMoe. If omitted, the service default prompt is used."
+          }
+        },
+        "required": [
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "Qwen-Image-Edit",
+      "description": "Use the Qwen image editing model to modify an image according to a text instruction. The edited image is returned and appended to environment images.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Editing instruction, e.g. 'make the sky sunset orange'."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to edit in the current environment."
+          }
+        },
+        "required": [
+          "prompt",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "OpenCV",
+      "description": "Use OpenCV for basic image processing operations such as crop, resize, rotate, flip, grayscale, blur, threshold, and canny.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "description": "Operation name: crop, resize, rotate, flip, grayscale, blur, threshold, or canny."
+          },
+          "image_index": {
+            "type": "integer",
+            "description": "The 1-based index of the image to process in the current environment."
+          },
+          "x": {
+            "type": "integer",
+            "description": "Crop top-left x, required for crop."
+          },
+          "y": {
+            "type": "integer",
+            "description": "Crop top-left y, required for crop."
+          },
+          "w": {
+            "type": "integer",
+            "description": "Crop width, required for crop."
+          },
+          "h": {
+            "type": "integer",
+            "description": "Crop height, required for crop."
+          },
+          "width": {
+            "type": "integer",
+            "description": "Target width, required for resize."
+          },
+          "height": {
+            "type": "integer",
+            "description": "Target height, required for resize."
+          },
+          "interpolation": {
+            "type": "string",
+            "description": "Resize interpolation: NEAREST, LINEAR, AREA, CUBIC. Optional for resize."
+          },
+          "angle": {
+            "type": "number",
+            "description": "Rotation angle, required for rotate."
+          },
+          "center": {
+            "type": "array",
+            "description": "Rotation center [x, y], optional for rotate.",
+            "items": {
+              "type": "number"
+            }
+          },
+          "scale": {
+            "type": "number",
+            "description": "Rotation scale, optional for rotate."
+          },
+          "flip_code": {
+            "type": "integer",
+            "description": "Flip code: 1 horizontal, 0 vertical, -1 both. Required for flip."
+          },
+          "ksize": {
+            "type": "integer",
+            "description": "Kernel size, required for blur."
+          },
+          "thresh": {
+            "type": "integer",
+            "description": "Threshold value, required for threshold unless OTSU is used."
+          },
+          "maxval": {
+            "type": "integer",
+            "description": "Max threshold value, optional for threshold."
+          },
+          "type": {
+            "type": "string",
+            "description": "Threshold type: BINARY, BINARY_INV, OTSU. Optional for threshold."
+          },
+          "threshold1": {
+            "type": "integer",
+            "description": "Canny low threshold, required for canny."
+          },
+          "threshold2": {
+            "type": "integer",
+            "description": "Canny high threshold, required for canny."
+          }
+        },
+        "required": [
+          "operation",
+          "image_index"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "python_code",
+      "description": "Execute Python code in a restricted sandbox for calculations and data processing. Returns text output.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Python code to execute."
+          },
+          "stdin": {
+            "type": "string",
+            "description": "Optional stdin passed to the code."
+          }
+        },
+        "required": [
+          "code"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "create_skill",
+      "description": "Create a reusable skill when existing tools are insufficient. Put requirement text in arguments.description.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "What the new skill should do and when to use it."
+          }
+        },
+        "required": [
+          "description"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "run_skill",
+      "description": "Run a skill entrypoint script (.py/.sh) and return textual output. Arguments must follow SKILL.md / SKILL_SPEC definition.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "skill_name": {
+            "type": "string",
+            "description": "Name of the skill to run."
+          },
+          "entrypoint": {
+            "type": "string",
+            "description": "Relative script path under the target skill directory."
+          },
+          "args": {
+            "type": "object",
+            "description": "Entrypoint arguments object."
+          }
+        },
+        "required": [
+          "skill_name",
+          "entrypoint"
+        ]
+      }
+    }
+  }
+]

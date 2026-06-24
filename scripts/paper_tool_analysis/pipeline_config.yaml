@@ -1,0 +1,207 @@
+# ============================================================================
+# Paper Tool Analysis - Config File
+# ============================================================================
+# 用法：
+# 1) 只需要修改本文件。
+# 2) 然后运行：
+#    python ./scripts/paper_tool_analysis/run_pipeline.py
+# 3) 你不需要再手写一长串命令行参数。
+#
+# 所有参数都提供了用途说明、可选值说明和建议值。
+# ============================================================================
+
+inputs:
+  # tool logs 目录（必填）
+  # 无论是 train 还是 eval 实验，都填这里。
+  # 目录内至少要有：
+  # - skills_<step>.json（train 有；eval 可能没有）
+  # - tool_rollouts_<step>.json
+  # 示例：
+  # /path/to/verl_step_records/tool_logs/train/<RUN_ID>
+  tool_log_dir: ""
+
+  # 样本 jsonl 目录（必填）
+  # train: 指向 rollout/train/<RUN_ID>
+  # eval : 指向 validation_data/val/<RUN_ID>
+  # 目录内至少要有：<step>.jsonl
+  # 示例：
+  # /path/to/verl_step_records/rollout/train/<RUN_ID>
+  # /path/to/verl_step_records/validation_data/val/<RUN_ID>
+  rollout_data_dir: ""
+
+  # skill store 目录（可选）
+  # 用于读取 skills/.../_skill_archive/_events.jsonl，分析 skill 的创建/删除/cleanup。
+  # 留空时会自动尝试从 tool_log_dir / rollout_data_dir 推断。
+  # 若推断不到或目录不存在，会自动降级为“无 archive 模式”。
+  skill_store_dir: ""
+
+experiment:
+  # 实验阶段：train（训练）/ eval（评测）/ auto（自动推断，默认）
+  # auto 模式：扫描 data_source 字段，含 _test_/_eval_/_val_ 的判为 eval，否则为 train。
+  # 推断不确定时打印 warning 并建议手动指定。
+  # 注意：train 和 eval 是互斥的，不存在同一次运行同时处理两者的情况。
+  phase: "auto"
+
+  # 工具集变体：id / ood / auto（自动推断，默认）
+  # auto 模式：扫描 rollout 文件中实际出现的工具名，命中哪侧就用哪侧。
+  # id  → Qwen3-VL / SAM3 / MinerU / PaddleOCR / EasyOCR / GroundingDINO 等
+  # ood → InternVL / WolframAlpha / UniChart / Deplot / ChartMoe 等
+  tool_variant: "auto"
+
+outputs:
+  # 输出根目录（建议保持默认）
+  # 脚本会在该目录下生成 analysis_cache / results / paper_bundle。
+  root_dir: "./scripts/paper_tool_analysis"
+
+  # 统一数据缓存目录名（相对 root_dir）
+  # 常规无需改。
+  analysis_cache_dir: "analysis_cache"
+
+  # 指标结果目录名（相对 root_dir）
+  # 常规无需改。
+  results_dir: "results"
+
+  # 论文打包目录名（相对 root_dir）
+  # 常规无需改。
+  paper_bundle_dir: "paper_bundle"
+
+runtime:
+  # 运行 Python 可执行程序路径。
+  # 留空时默认使用当前环境的 `python`。
+  # 仅当你有多个 Python 环境且想强制指定时才填写。
+  python_bin: ""
+
+  # 任一步骤失败时是否立即中断。
+  # true: 立刻停止，便于尽快定位问题（推荐）。
+  # false: 跳过失败步骤继续跑后续步骤。
+  fail_fast: true
+
+  # 是否启用增量运行。
+  # true: 跳过已存在输出的步骤（节省时间）。适用于断点后继续运行。
+  # false: 每次从头运行所有步骤（默认）。
+  # 也可通过命令行参数 --resume 覆盖此配置。
+  resume: false
+
+pipeline:
+  # 是否执行构建统一数据集步骤（build_unified_dataset.py）
+  build_unified: true
+
+  # 是否执行工具动态指标步骤（tool_dynamics_metrics.py）
+  tool_dynamics: true
+
+  # 是否执行 skill 生命周期指标步骤（skill_lifecycle_metrics.py）
+  skill_lifecycle: true
+
+  # 是否执行 skill 语义聚类步骤（skill_semantic_clustering_llm.py）
+  skill_semantic_clustering: true
+
+  # 是否执行 surprise 挖掘步骤（surprise_miner_llm.py）
+  surprise_miner: true
+
+  # 是否执行论文打包步骤（make_paper_bundle.py）
+  paper_bundle: true
+
+  # 是否执行各数据集 create_skill 调用量统计步骤（create_skill_by_datasource.py）
+  create_skill_by_datasource: true
+
+params:
+  build_unified:
+    # 只读取最后 N 个 rollout jsonl 文件。
+    # 0 表示读取全部（推荐）。
+    # 当日志非常大、你只想快速预览最近趋势时可改为 50 / 100。
+    max_rollout_files: 0
+
+    # 是否读取 skill archive 事件。
+    # auto: 只有当 _skill_archive/_events.jsonl 存在时才读取（推荐）
+    # true: 强制尝试读取；文件不存在时打印 warning
+    # false: 完全跳过 archive 读取
+    include_skill_archive: "auto"
+
+    # 用于判定 obs error 的 marker 列表。
+    # 默认沿用 run_skill 的 [stderr] 规则；可按实验需要扩充。
+    obs_error_markers:
+      - "[stderr]"
+
+  tool_dynamics:
+    # 逐步工具曲线/失败分析时，绘图和重点摘要优先保留的工具数量。
+    top_k_tools: 15
+
+    # surprise / bundle 中滚动窗口平滑时的窗口宽度（step）。
+    rolling_window: 5
+
+    # invalid reason 面积图和摘要表保留的 Top-K 原因数量。
+    top_k_invalid_reasons: 12
+
+  skill_lifecycle:
+    # 计算 skill 创建前后 uplift 时使用的窗口大小（单位：step）。
+    # 例如 5 表示比较 [first_seen-5, first_seen-1] vs [first_seen+1, first_seen+5]。
+    # 窗口太小容易噪声大，太大可能掺入阶段迁移影响。
+    # 推荐：5 ~ 15。
+    uplift_window: 5
+
+    # 分析“创建后多久被成功复用”时的默认观察窗口。
+    reuse_window: 10
+
+    # 生成 skill 统计摘要时，至少保留多少次调用的 skill。
+    min_calls_for_skill_stats: 3
+
+  skill_semantic_clustering:
+    # 保留调用次数 >= min_calls 的 skill 参与语义分类。
+    # 目的是过滤只出现 1 次、证据过少的 skill。
+    min_calls: 1
+
+    # 参与分类的 skill 最大数量（按 total_calls 排序后截断）。
+    # 训练产生 skill 很多时可限制为 100~300 控制耗时。
+    max_skills: 100
+
+  surprise_miner:
+    # “明显变化”最小 effect size，用于 obs_error / invalid_reason 下降类惊喜挖掘。
+    min_effect_size: 0.05
+
+    # hero tool / hero skill / failure spike 等候选的最小调用样本量。
+    min_calls: 8
+
+    # surprise 输出最多保留多少条 finding。
+    max_findings: 20
+
+  paper_bundle:
+    # 绘图时每张图最多展示多少个工具/skill/reason。
+    top_k_plot_items: 12
+
+  create_skill_by_datasource:
+    # 打印 data_source 排名时显示的 Top-N 数量。
+    # 默认 10，调大可看到更多数据集。
+    top_n: 10
+
+llm:
+  # 是否启用 LLM 参与分析。
+  # false: 全流程走 heuristic（离线可跑，不依赖外部服务）
+  # true: semantic clustering 和 surprise miner 将使用 LLM 模式
+  enabled: false
+
+  # OpenAI 兼容接口 base_url。
+  # 只有 enabled=true 时才需要填写。
+  # 示例：
+  # https://api.openai.com
+  # http://<your-internal-gateway>
+  base_url: ""
+
+  # 使用的模型名。
+  # 只有 enabled=true 时生效。
+  # 示例：gpt-4o-mini / qwen-max / 你网关支持的模型名
+  model: "gpt-4o-mini"
+
+  # API key（可选）。
+  # 若留空，将尝试读取环境变量 OPENAI_API_KEY。
+  # 建议优先留空并走环境变量，避免把密钥写入仓库。
+  api_key: ""
+
+  # 启用 LLM 时给子脚本传入的 mode。
+  # 可选：llm / auto
+  # 推荐：llm（行为更确定）
+  mode_when_enabled: "llm"
+
+  # 未启用 LLM 时给子脚本传入的 mode。
+  # 可选：heuristic / auto
+  # 推荐：heuristic（确保完全离线）
+  mode_when_disabled: "heuristic"

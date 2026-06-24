@@ -1,0 +1,3 @@
+cd /inspire/hdd/project/ai4education/public/wsa_1.0/verltools/verl_m
+export RUN_ID=20260415_220049_exp17_multimodal_orchestra-fsdp-agent-_inspire_hdd_project_ai4education_zhouaimin-p-zhouaimin_zc_verltools_model_internvl3_5-14b-hf-grpo-lr1e-6-multimodal-orchestra-adapt-skills-c_and_f_s-0-cu_s-20-l_s-86-t_s-86-kl_l-0.002
+MODE=bundled bash '/inspire/hdd/project/ai4education/public/wsa_1.0/verltools/verl_m/examples/train/multimodal_orchestra/single_node/train_internvl_with_retry.sh'

@@ -1,0 +1,3 @@
+cd /inspire/hdd/project/ai4education/public/wsa_1.0/verltools/verl_m
+export RUN_ID=20260313_021212_exp14_multimodal_orchestra-fsdp2-agent-_inspire_hdd_project_ai4education_public_models_qwen_qwen3-vl-8b-instruct-grpo-lr5e-7-skill-reward-c_and_f_s-0-cu_s-20-l_s-86-t_s-120-kl_l-0.002
+MODE=bundled bash '/inspire/hdd/project/ai4education/public/wsa_1.0/verltools/verl_m/examples/train/multimodal_orchestra/single_node/train_4gpu_with_retry.sh'

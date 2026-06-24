@@ -1,0 +1,204 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "extract_chart_data",
+      "description": "Extract data from charts, supporting multiple chart types (bar, pie, line, scatter, etc.). Can extract values, labels, color mappings, coordinate points, and more. Also supports filtering by label, color, or index.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "chart_type": {
+            "type": "string",
+            "description": "Chart type, such as bar, pie, line, scatter."
+          },
+          "target_label": {
+            "type": "string",
+            "description": "Optional. Target label name to extract specific data (e.g., 'Dark Magenta', 'Navy Blue')."
+          },
+          "target_color": {
+            "type": "string",
+            "description": "Optional. Target color name to extract specific data (e.g., 'Maroon', 'Khaki')."
+          },
+          "target_index": {
+            "type": "integer",
+            "description": "Optional. Index position to extract data at specific location."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model used to extract_chart_data. Choices: ['extract_chart_data-1', 'extract_chart_data-2']."
+          }
+        },
+        "required": [
+          "chart_type",
+          "model"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "calculate_statistics",
+      "description": "Calculate statistical indicators for data, including maximum, minimum, median, mean, variance, standard deviation, etc. Supports returning both the statistical values and their corresponding index positions, labels, or color information.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "statistics_type": {
+            "type": "string",
+            "description": "Statistics type, such as max, min, median, low_median, high_median, mean, variance, std, percentage."
+          },
+          "target_label": {
+            "type": "string",
+            "description": "Optional. Target label to get statistics for specific data series."
+          },
+          "target_color": {
+            "type": "string",
+            "description": "Optional. Target color to get statistics for specific color series."
+          },
+          "return_info": {
+            "type": "string",
+            "description": "Optional. Type of information to return: 'value' (default), 'index', 'label', or 'color'."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model used to calculate_statistics. Choices: ['calculate_statistics-1', 'calculate_statistics-2']."
+          }
+        },
+        "required": [
+          "statistics_type",
+          "model"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "compare_and_filter",
+      "description": "Compare and filter data operations. Supports: (1) Value-to-value comparison (greater than, less than, equal to); (2) Value-to-statistic comparison (vs max, min, median); (3) Filter data meeting conditions (above median, below median, etc.); (4) Label matching check. Returns comparison results or filtered datasets.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "comparison_type": {
+            "type": "string",
+            "description": "Comparison type: 'value_to_value', 'value_to_statistic', 'filter_by_condition', 'label_match'."
+          },
+          "target_value": {
+            "type": "string",
+            "description": "Target value (label, color, or numeric value) for comparison or filtering."
+          },
+          "condition": {
+            "type": "string",
+            "description": "Comparison condition: 'greater', 'less', 'equal', 'above_median', 'below_median', 'above_high_median', 'below_low_median', 'is_max', 'is_min'."
+          },
+          "reference_value": {
+            "type": "string",
+            "description": "Optional. Reference value (label, color, or numeric value) for comparison operations."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model used to compare_and_filter. Choices: ['compare_and_filter-1', 'compare_and_filter-2']."
+          }
+        },
+        "required": [
+          "comparison_type",
+          "condition",
+          "model"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "analyze_curve_properties",
+      "description": "Analyze geometric and statistical properties of curves or data sequences, including: (1) Smoothness (based on slope change variance); (2) Roughness (adjacent point change magnitude); (3) Area under curve (using trapezoidal rule); (4) Slope calculation; (5) Variability metrics. Supports comparison of multiple curves, returning results like smoothest, roughest, etc.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "analysis_type": {
+            "type": "string",
+            "description": "Analysis type: 'smoothness', 'roughness', 'area_under_curve', 'slope', 'variance', 'std_deviation'."
+          },
+          "target_series": {
+            "type": "string",
+            "description": "Optional. Target series name (label or color) to analyze specific curve."
+          },
+          "comparison_mode": {
+            "type": "string",
+            "description": "Optional. Comparison mode: 'find_max', 'find_min', 'compare_all'. Used when analyzing multiple curves."
+          },
+          "reference_series": {
+            "type": "string",
+            "description": "Optional. Reference series name for pairwise comparison."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model used to analyze_curve_properties. Choices: ['analyze_curve_properties-1', 'analyze_curve_properties-2']."
+          }
+        },
+        "required": [
+          "analysis_type",
+          "model"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "detect_intersection",
+      "description": "Detect whether two lines, two data series, or two scatter datasets intersect. By comparing Y values of data points, checking range overlap, or determining sign changes, determine if intersection points exist. Returns boolean or intersection point location information.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "series1": {
+            "type": "string",
+            "description": "Name (label or color) of the first curve or data series."
+          },
+          "series2": {
+            "type": "string",
+            "description": "Name (label or color) of the second curve or data series."
+          },
+          "detection_method": {
+            "type": "string",
+            "description": "Detection method: 'y_value_comparison', 'range_overlap', 'sign_change', 'point_overlap'."
+          },
+          "x_range": {
+            "type": "string",
+            "description": "Optional. X-axis range for intersection detection (e.g., 'full', '0-10', 'specific_point')."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model used to detect_intersection. Choices: ['detect_intersection-1', 'detect_intersection-2']."
+          }
+        },
+        "required": [
+          "series1",
+          "series2",
+          "detection_method",
+          "model"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "python_code",
+      "description": "Write and execute Python code securely inside a Firejail sandbox. Supports various libraries including string, re, datetime, collections, heapq, bisect, copy, math, random, statistics, itertools, functools, operator, io, sys, json, and more. Can be used for data analysis, calculation, and computation tasks.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Python code to execute."
+          }
+        },
+        "required": [
+          "code"
+        ]
+      }
+    }
+  }
+]
