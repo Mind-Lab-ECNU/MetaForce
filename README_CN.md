@@ -106,6 +106,20 @@ GOOGLE_MAPS_API_KEY=your_google_maps_key_here
 
 MetaForge 默认使用 parquet 格式的训练和评估数据。典型样本包含文本 prompt、可选图像字段、答案以及奖励管理器需要的元信息。
 
+公开发布的训练集和测试集托管在 Hugging Face Datasets：
+
+- 数据集主页：https://huggingface.co/datasets/Mind-Lab-ECNU/metaforge
+
+对于大文件，建议使用命令行下载，避免网页上传/下载中断：
+
+```bash
+huggingface-cli download Mind-Lab-ECNU/metaforge \
+  --repo-type dataset \
+  --local-dir data/metaforge
+```
+
+下载后根据实际文件位置设置训练和评估数据路径。
+
 示例目录：
 
 ```text

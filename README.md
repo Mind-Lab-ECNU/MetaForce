@@ -106,6 +106,20 @@ Do not hard-code credentials in scripts. Keep local secret files out of version 
 
 MetaForge expects training and evaluation data in parquet format. Typical records include text prompts, optional image references or encoded image fields, answers, and metadata required by the reward manager.
 
+The released training and test datasets are hosted on Hugging Face Datasets:
+
+- Dataset page: https://huggingface.co/datasets/Mind-Lab-ECNU/metaforge
+
+For large files, use the command-line downloader instead of the web UI:
+
+```bash
+huggingface-cli download Mind-Lab-ECNU/metaforge \
+  --repo-type dataset \
+  --local-dir data/metaforge
+```
+
+After downloading, set the training and evaluation data paths according to the local file locations.
+
 Example layout:
 
 ```text
